@@ -1,14 +1,53 @@
-<div class="mb-4"><a href="/mahasiswa/create" class="bg-blue-600 text-white px-4 py-2 rounded">+ Tambah</a></div>
-<% if(typeof success !== 'undefined' && success) { %><div class="bg-green-500 text-white p-3 rounded mb-4"><%= success %></div><% } %>
+<div class="mb-4">
+  <a href="/mahasiswa/create" class="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">+ Tambah</a>
+</div>
+
+<% if(typeof success !== 'undefined' && success) { %>
+  <div class="bg-green-500 text-white p-3 rounded mb-4"><%= success %></div>
+<% } %>
+
 <div class="bg-white rounded-2xl shadow overflow-hidden">
-  <table class="min-w-full text-left text-sm font-light">
-    <thead class="border-b font-medium bg-gray-100"><tr><th class="px-6 py-4">No</th><th class="px-6 py-4">Nama</th><th class="px-6 py-4">NIM</th><th class="px-6 py-4">Aksi</th></tr></thead>
+  <table class="min-w-full text-left text-sm font-light text-black">
+    <thead class="border-b font-medium bg-gray-100">
+      <tr>
+        <th class="px-6 py-4">No</th>
+        <th class="px-6 py-4">Nama</th>
+        <th class="px-6 py-4">NIM</th>
+        <th class="px-6 py-4">Aksi</th>
+      </tr>
+    </thead>
     <tbody>
       <% mahasiswa.forEach((m, index) => { %>
-        <tr class="border-b"><td class="px-6 py-4"><%= index + 1 %></td><td class="px-6 py-4"><%= m.nama %></td><td class="px-6 py-4"><%= m.nim %></td>
-          <td class="px-6 py-4"><a href="/mahasiswa/edit/<%= m.id %>" class="bg-yellow-500 text-white px-3 py-1 rounded text-xs mr-2">Edit</a><a href="/mahasiswa/delete/<%= m.id %>" class="bg-red-500 text-white px-3 py-1 rounded text-xs">Hapus</a></td>
+        <tr class="border-b hover:bg-gray-50">
+          <td class="px-6 py-4"><%= index + 1 %></td>
+          <td class="px-6 py-4"><%= m.nama %></td>
+          <td class="px-6 py-4"><%= m.nim %></td>
+          <td class="px-6 py-4">
+            <a href="/mahasiswa/edit/<%= m.id %>" class="bg-yellow-500 text-white px-3 py-1 rounded text-xs mr-2">Edit</a>
+            <button onclick="konfirmasiHapus('<%= m.id %>')" class="bg-red-500 text-white px-3 py-1 rounded text-xs">Hapus</button>
+          </td>
         </tr>
       <% }) %>
     </tbody>
   </table>
 </div>
+
+<script>
+  function konfirmasiHapus(id) {
+    Swal.fire({
+      title: 'Yakin?',
+      text: "Data akan dihapus permanen!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ef4444', // Warna merah mirip tombol hapus
+      cancelButtonColor: '#6b7280', // Warna abu-abu
+      confirmButtonText: 'Ya, hapus!',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Jika diklik 'Ya', arahkan ke rute delete
+        window.location.href = `/mahasiswa/delete/${id}`;
+      }
+    })
+  }
+</script>
